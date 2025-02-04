@@ -5,8 +5,7 @@ import express from 'express';
 import cors from 'cors'
 import cookieParser from "cookie-parser";
 import router from "./router/index";
-
-
+import errorMiddleware from "./middleware/error-middleware"
 
 const app = express();
 
@@ -21,27 +20,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use('/api', router);
 
-// app.post('/user', async (req: Request, res: Response): Promise<void> => {
-//     try {
-//         const {login, password} = req.body;
-//         let { data: usersResultUnivercity, error } = await supabase
-//             .from('usersResultUnivercity')
-//             .select('*')
-//             .eq('login', login)
-//             .eq('password', password)
-//         if (error) {
-//             console.error('Error fetching users:', error);
-//             res.status(500).send('Err`or fetching users');
-//             return;
-//         }
-//
-//         console.log('Users:', usersResultUnivercity);
-//         res.json(usersResultUnivercity);
-//     } catch (err) {
-//         console.error('Unexpected error:', err);
-//         res.status(500).send('Unexpected error');
-//     }
-// });
+// @ts-ignore
+app.use(errorMiddleware);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
