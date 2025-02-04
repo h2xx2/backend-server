@@ -46,6 +46,8 @@ class UserController {
         }
     }
 
+
+
     async activate(req: Request<{ link: string }>, res: Response, next: NextFunction): Promise<void> {
         try {
             const activationLink = req.params.link;
