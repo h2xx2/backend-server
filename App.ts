@@ -12,7 +12,8 @@ const app = express();
 const corsOptions = {
     origin: 'http://localhost:5173', // Разрешаем запросы с этого источника (из вашего фронтенда)
     methods: ['GET', 'POST'], // Разрешаем только определенные методы
-    allowedHeaders: ['Content-Type'], // Разрешаем только необходимые заголовки
+    allowedHeaders: ['Content-Type'],
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
