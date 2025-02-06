@@ -9,14 +9,12 @@ import errorMiddleware from "./middleware/error-middleware"
 
 const app = express();
 
-const corsOptions = {
+app.use(cors({
     origin: 'http://localhost:5173', // Разрешаем запросы с этого источника (из вашего фронтенда)
     methods: ['GET', 'POST'], // Разрешаем только определенные методы
     allowedHeaders: ['Content-Type'],
     credentials: true,
-};
-
-app.use(cors(corsOptions));
+}));
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api', router);
