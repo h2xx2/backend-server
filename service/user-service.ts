@@ -5,7 +5,6 @@ import mailService from "./mail-service";
 import tokenService from "./token-service";
 import userDTO from '../dtos/user-dto';
 import ApiError from "../exception/api-error";
-import userData from "../interface/user"
 
 
 class UserService {

@@ -68,14 +68,6 @@ class UserController {
             next(e);
         }
     }
-
-    async getUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            res.json(['123', '456']);
-        } catch (e) {
-            next(e);
-        }
-    }
 }
 
 export default new UserController();

@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import userController from '../controllers/user-controller';
+import reviewController from '../controllers/review-controller';
 import {body} from 'express-validator';
+import {verifyRefreshToken} from "../middleware/validateRefreshToken";
 
 const router = Router();
 
@@ -12,6 +14,10 @@ router.post('/login', userController.login);
 router.post('/logout', userController.logout);
 router.get('/activate/:link', userController.activate);
 router.get('/refresh', userController.refresh);
-router.get('/users', userController.getUsers);
+
+router.post('/reviews', verifyRefreshToken,  reviewController.createReview);
+router.get('/reviews', reviewController.getReviews);
+
+
 
 export default router;

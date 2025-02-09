@@ -4,5 +4,5 @@ export default interface IUser {
     password: string;
     is_activated: boolean;
     activation_link: string;
-    created_at?: string;  // Автоматически добавляется Supabase
+    created_at?: string;
 }
