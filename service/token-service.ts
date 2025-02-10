@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { supabase } from "../supabase";
+import {supabase} from "../supabase";
 
 class TokenService {
     generateTokens(payload: object) {
@@ -22,24 +22,21 @@ class TokenService {
     validateAccessToken(token:string) {
         try{
             const userData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!)
+            return userData;
         }
         catch(error){
             return null
         }
     }
-    validateRefreshToken(token:string) {
-        try{
-            try{
-                const userData = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!)
-            }
-            catch(error){
-                return null
-            }
-        }
-        catch(error){
 
+    async validateRefreshToken(token: string) {
+        try {
+            return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!);
+        } catch (error) {
+            return null;
         }
     }
+
 
     async saveToken(userId: string, refreshToken: string) {
         const { data, error } = await supabase

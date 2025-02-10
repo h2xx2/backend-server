@@ -1,30 +1,18 @@
-import { Request, Response, NextFunction } from "express";
-import tokenService from "../service/token-service";
+import {NextFunction, Request, Response} from "express";
+import TokenService from "../service/token-service";
 
-export const verifyRefreshToken = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-): Promise<void> => {
+// Middleware для валидации refresh token
+export const verifyRefreshToken = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
     try {
-        const refreshToken = req.cookies.refreshToken;
-
-        if (!refreshToken) {
-            res.status(401).json({ message: "Refresh token отсутствует" });
-            return;
+        const token = req.headers.authorization?.split(" ")[1]; // Получаем токен из заголовка
+        if (!token) {
+            return res.status(401).json({ message: "Нет refresh token" });
         }
 
-        const userDTO = tokenService.validateRefreshToken(refreshToken);
-        if (!userDTO) {
-            res.status(401).json({ message: "Неверный refresh token" });
-            return;
-        }
-
-        // Сохраняем в res.locals
-        res.locals.userId = userDTO;
+        req.body.user = await TokenService.validateRefreshToken(token);  // Сохраняем данные пользователя в body
 
         next();
     } catch (error) {
-        res.status(401).json({ message: "Ошибка проверки refresh token" });
+        return res.status(403).json({ message: "Неверный refresh token" });
     }
 };
