@@ -20,6 +20,7 @@ router.get('/refresh', userController.refresh);
 
 router.post('/reviews', upload.array("files"), verifyRefreshToken,  reviewController.createReview);
 router.get('/reviews', reviewController.getReviews);
+router.get('/myreviews',verifyRefreshToken, reviewController.getMyReviews);
 
 
 

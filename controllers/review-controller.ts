@@ -7,6 +7,7 @@ export default class ReviewController {
         try {
             const { title, description } = req.body; // Получаем текстовые данные
             const userId = req.body.user?.id; // Получаем ID пользователя из данных, переданных middleware
+
             if (!userId) {
                 return res.status(400).json({ message: "Нет данных о пользователе" });
             }
@@ -38,6 +39,25 @@ export default class ReviewController {
             res.status(200).json({ data: reviews });
         } catch (error) {
             next(error); // Передача ошибки в middleware обработки ошибок
+        }
+    }
+
+
+    static async getMyReviews(req: Request, res: Response, next: NextFunction): Promise<any> {
+        try {
+            const userId = req.body.user?.id;
+            if (!userId) {
+                return res.status(400).json({ message: "Нет данных о пользователе" });
+            }
+            const reviews = await ReviewService.getMyReviews(userId);
+
+            if (!reviews || reviews.length === 0) {
+                return res.status(404).json({ message: "Отзывы не найдены" });
+            }
+
+            res.status(200).json({ data: reviews });
+        } catch (error) {
+            next(error);
         }
     }
 }

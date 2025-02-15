@@ -10,7 +10,7 @@ export const verifyRefreshToken = async (req: Request, res: Response, next: Next
         }
 
         req.body.user = await TokenService.validateRefreshToken(token);  // Сохраняем данные пользователя в body
-
+        console.log(req.body.user);
         next();
     } catch (error) {
         return res.status(403).json({ message: "Неверный refresh token" });

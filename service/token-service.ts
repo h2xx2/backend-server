@@ -31,8 +31,10 @@ class TokenService {
 
     async validateRefreshToken(token: string) {
         try {
+            console.log(token)
             return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET!);
         } catch (error) {
+            console.log(error);
             return null;
         }
     }
