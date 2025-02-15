@@ -128,4 +128,39 @@ export class ReviewService {
         }
         return reviews;
     }
+    static async getReview(reviewId: string):Promise<any> {
+        const {data: reviews, error: reviewsError} = await supabase
+            .from("review")
+            .select(`
+                    id, 
+                    created_at, 
+                    user_id, 
+                    title, 
+                    description,
+                    media_files (id, storage_path, file_type, uploaded_at),
+                    users (email) 
+                `)
+            .eq('id', reviewId);
+
+
+        if (reviewsError) throw new Error(reviewsError.message);
+
+        // Добавляем ссылки для фотографий
+        for (const review of reviews) {
+            if (review.media_files && review.media_files.length > 0) {
+                review.media_files = review.media_files.map((file) => {
+                    // Генерация публичного URL (замените на createSignedUrl для приватных файлов)
+                    const {data: publicUrl} = supabase.storage
+                        .from("review") // Укажите имя вашего bucket
+                        .getPublicUrl(file.storage_path);
+
+                    return {
+                        ...file,
+                        url: publicUrl?.publicUrl, // Добавляем ссылку на файл
+                    };
+                });
+            }
+        }
+        return reviews;
+    }
 }
